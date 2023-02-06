@@ -1,5 +1,6 @@
 package com.hanghae.springboard.entity;
 
+import com.hanghae.springboard.dto.LetterRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,13 +13,13 @@ public class Letter extends Timestamped{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // 게시물 번호
 
     @Column(nullable = false)
-    private String username;
+    private String username; // 작성자
 
     @Column(nullable = false)
-    private String contents;
+    private String contents; // 내용
 
     @Column(nullable = false)
     private String password;
@@ -28,6 +29,13 @@ public class Letter extends Timestamped{
         this.username = username;
         this.contents = contents;
         this.password = password;
+    }
+
+    public Letter(LetterRequestDto letterRequestDto){
+        this.id = letterRequestDto.getId();
+        this.username = letterRequestDto.getUsername();
+        this.contents = letterRequestDto.getContents();
+        this.password = letterRequestDto.getPassword();
     }
 
 }
