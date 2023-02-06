@@ -2,11 +2,9 @@ package com.hanghae.springboard.dto;
 
 import com.hanghae.springboard.entity.Letter;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
@@ -14,9 +12,16 @@ public class LetterResponseDto {
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
     private Long id;
-    private String title;
+    private String contents;
     private String username;
 
+    public LetterResponseDto(Letter letter){
+        this.createAt = letter.getCreatedAt();
+        this.modifiedAt = letter.getModifiedAt();
+        this.id = letter.getId();
+        this.contents = letter.getContents();
+        this.username = letter.getUsername();
+    }
 
 }
 //{
