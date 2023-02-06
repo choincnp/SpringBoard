@@ -20,6 +20,7 @@ public class Letter extends Timestamped{
     @Column(nullable = false)
     private String contents;
 
+    @Column(nullable = false)
     private String password;
 
     public Letter(Long id, String username, String contents, String password) {
