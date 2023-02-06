@@ -21,5 +21,15 @@ public class MainController {
         return letterService.findAll();
     }
 
+    @PostMapping("/post")
+    public Long postLetter(LetterRequestDto letterRequestDto){
+        return letterService.postLetter(letterRequestDto);
+    }
+
+    @GetMapping("/post/{id}")
+    public Long viewOne(@PathVariable Long id){
+        return letterService.findOne(id).getId();
+    }
+
 
 }
