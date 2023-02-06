@@ -4,6 +4,7 @@ import com.hanghae.springboard.dto.LetterResponseDto;
 import com.hanghae.springboard.dto.LetterRequestDto;
 import com.hanghae.springboard.service.LetterService;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class MainController {
         return letterService.modifyLetter(id,letterRequestDto);
     }
     @DeleteMapping("/post/{id}")
-    public Long deleteLetter(@PathVariable Long id, String password){
+    public String deleteLetter(@PathVariable Long id, String password) throws JSONException {
         return letterService.deleteLetter(id, password);
     }
 
