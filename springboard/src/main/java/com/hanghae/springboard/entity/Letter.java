@@ -16,7 +16,7 @@ public class Letter extends Timestamped{
     private Long id; // 게시물 번호
 
     @Column(nullable = false)
-    private String username; // 작성자
+    private String username; // 작성자명
 
     @Column(nullable = false)
     private String contents; // 내용
