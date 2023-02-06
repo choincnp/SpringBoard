@@ -5,6 +5,8 @@ import com.hanghae.springboard.dto.LetterRequestDto;
 import com.hanghae.springboard.entity.Letter;
 import com.hanghae.springboard.repository.LetterRepository;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,10 +42,12 @@ public class LetterService {
         return letter.getId();
     }
 
-    public Long deleteLetter(Long id, String password) {
+    public String deleteLetter(Long id, String password) throws JSONException {
         Letter letter = letterRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("아이디 없음"));
         if(!letter.isValid(password)) throw new RuntimeException("비밀번호 불일치");
         letterRepository.delete(letter);
-        return id;
+        JSONObject success = new JSONObject();
+        success.put("success", true);
+        return success.toString();
     }
 }
