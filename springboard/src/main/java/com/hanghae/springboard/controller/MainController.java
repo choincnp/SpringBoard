@@ -22,7 +22,7 @@ public class MainController {
     }
 
     @PostMapping("/post")
-    public Long postLetter(LetterRequestDto letterRequestDto){
+    public Long postLetter(@RequestBody LetterRequestDto letterRequestDto){
         return letterService.postLetter(letterRequestDto);
     }
 
@@ -32,11 +32,11 @@ public class MainController {
     }
 
     @PutMapping("/post/{id}") //PUT METHOD이기 때문에 모든 내용이 다 들어가야 한다.
-    public Long modifyLetter(@PathVariable Long id, LetterRequestDto letterRequestDto){
+    public Long modifyLetter(@PathVariable Long id, @RequestBody LetterRequestDto letterRequestDto){
         return letterService.modifyLetter(id,letterRequestDto);
     }
     @DeleteMapping("/post/{id}")
-    public String deleteLetter(@PathVariable Long id, String password) throws JSONException {
+    public String deleteLetter(@PathVariable Long id, @RequestBody String password) throws JSONException {
         return letterService.deleteLetter(id, password);
     }
 
