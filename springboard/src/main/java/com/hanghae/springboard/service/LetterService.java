@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -16,15 +17,15 @@ public class LetterService {
     private final LetterRepository letterRepository;
 
     @Transactional
-    public Letter postLetter(LetterRequestDto letterRequestDto){
+    public long postLetter(LetterRequestDto letterRequestDto){
         Letter letter = new Letter(letterRequestDto);
         letterRepository.save(letter);
-        return letter;
+        return new LetterResponseDto(letter).getId();
     }
 
     @Transactional
-    public List<Letter> findAll(){
-        return letterRepository.findAllByOrderByModifiedAtDesc();
+    public List<LetterResponseDto> findAll(){ // service Layer에서 Entity >> DTO 변환작업, 사유 : LazyInitializationException 위험부담 줄임
+        return letterRepository.findAllByOrderByModifiedAtDesc().stream().map(LetterResponseDto::new).collect(Collectors.toList());
     }
 
 
