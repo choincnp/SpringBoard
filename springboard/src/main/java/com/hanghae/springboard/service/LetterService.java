@@ -23,10 +23,14 @@ public class LetterService {
         return new LetterResponseDto(letter).getId();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<LetterResponseDto> findAll(){ // service Layer에서 Entity >> DTO 변환작업, 사유 : LazyInitializationException 위험부담 줄임
         return letterRepository.findAllByOrderByModifiedAtDesc().stream().map(LetterResponseDto::new).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public LetterResponseDto findOne(Long id){
+        return letterRepository.findById(id).map(LetterResponseDto::new).orElseThrow(() -> new IllegalArgumentException("아이디가 없어요"));
+    }
 
 }
