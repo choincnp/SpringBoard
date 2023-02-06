@@ -30,7 +30,20 @@ public class LetterService {
 
     @Transactional(readOnly = true)
     public LetterResponseDto findOne(Long id){
-        return letterRepository.findById(id).map(LetterResponseDto::new).orElseThrow(() -> new IllegalArgumentException("아이디가 없어요"));
+        return letterRepository.findById(id).map(LetterResponseDto::new).orElseThrow(() -> new IllegalArgumentException("아이디 없음"));
+    }
+    @Transactional
+    public Long modifyLetter(Long id, LetterRequestDto letterRequestDto) throws IllegalStateException {
+        Letter letter = letterRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("아이디 없음"));
+        if (!letter.isValid(letterRequestDto)) throw new RuntimeException("비밀번호 불일치");
+        letter.update(letterRequestDto);
+        return letter.getId();
     }
 
+    public Long deleteLetter(Long id, String password) {
+        Letter letter = letterRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("아이디 없음"));
+        if(!letter.isValid(password)) throw new RuntimeException("비밀번호 불일치");
+        letterRepository.delete(letter);
+        return id;
+    }
 }
