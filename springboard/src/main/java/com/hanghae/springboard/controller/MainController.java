@@ -17,7 +17,7 @@ public class MainController {
     private final LetterService letterService;
 
     @GetMapping("/posts")
-    public List<Letter> viewAll(){
+    public List<LetterResponseDto> viewAll(){
         return letterService.findAll();
     }
 
