@@ -19,23 +19,40 @@ public class Letter extends Timestamped{
     private String username; // 작성자명
 
     @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private String contents; // 내용
 
     @Column(nullable = false)
     private String password;
 
-    public Letter(Long id, String username, String contents, String password) {
+    public Letter(Long id, String username,String title, String contents, String password) {
         this.id = id;
         this.username = username;
+        this.title = title;
         this.contents = contents;
         this.password = password;
     }
 
     public Letter(LetterRequestDto letterRequestDto){
-        this.id = letterRequestDto.getId();
         this.username = letterRequestDto.getUsername();
+        this.title = letterRequestDto.getTitle();
         this.contents = letterRequestDto.getContents();
         this.password = letterRequestDto.getPassword();
     }
 
+    public boolean isValid(LetterRequestDto letterRequestDto){
+        return password.equals(letterRequestDto.getPassword());
+    }
+
+    public boolean isValid(String password){
+        return this.password.equals(password);
+    }
+
+    public void update(LetterRequestDto letterRequestDto){
+        this.username = letterRequestDto.getUsername();
+        this.contents = letterRequestDto.getContents();
+        this.title = letterRequestDto.getTitle();
+    }
 }
