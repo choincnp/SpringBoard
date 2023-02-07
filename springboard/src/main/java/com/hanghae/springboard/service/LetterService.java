@@ -35,13 +35,13 @@ public class LetterService {
         return letterRepository.findById(id).map(LetterResponseDto::new).orElseThrow(() -> new IllegalArgumentException("아이디 없음"));
     }
     @Transactional
-    public Long modifyLetter(Long id, LetterRequestDto letterRequestDto) throws IllegalStateException {
+    public Long modifyLetter(Long id, LetterRequestDto letterRequestDto) {
         Letter letter = letterRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("아이디 없음"));
         if (!letter.isValid(letterRequestDto)) throw new RuntimeException("비밀번호 불일치");
         letter.update(letterRequestDto);
         return letter.getId();
     }
-
+    @Transactional
     public String deleteLetter(Long id, String password) throws JSONException {
         Letter letter = letterRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("아이디 없음"));
         if(!letter.isValid(password)) throw new RuntimeException("비밀번호 불일치");
