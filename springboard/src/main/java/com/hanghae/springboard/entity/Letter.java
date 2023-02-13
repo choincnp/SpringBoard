@@ -27,16 +27,8 @@ public class Letter extends Timestamped{
     @Column(nullable = false)
     private String password;
 
-    public Letter(Long id, String username,String title, String contents, String password) {
-        this.id = id;
-        this.username = username;
-        this.title = title;
-        this.contents = contents;
-        this.password = password;
-    }
-
-    public Letter(LetterRequestDto letterRequestDto){
-        this.username = letterRequestDto.getUsername();
+    public Letter(LetterRequestDto letterRequestDto, String userName){
+        this.username = userName;
         this.title = letterRequestDto.getTitle();
         this.contents = letterRequestDto.getContents();
         this.password = letterRequestDto.getPassword();
