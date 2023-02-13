@@ -22,9 +22,10 @@ public class UserService {
     private final JwtUtil jwtUtil;
 
     @Transactional
-    public void signUp(@Valid SignupRequestDto signupRequestDto){
+    public void signUp(SignupRequestDto signupRequestDto){
         String username = signupRequestDto.getUsername();
-
+        String password = signupRequestDto.getPassword();
+        System.out.println(password);
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");

@@ -8,6 +8,8 @@ import org.json.JSONException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -23,8 +25,8 @@ public class MainController {
     }
 
     @PostMapping("/post")
-    public Long postLetter(@RequestBody LetterRequestDto letterRequestDto){
-        return letterService.postLetter(letterRequestDto);
+    public LetterResponseDto postLetter(@RequestBody LetterRequestDto letterRequestDto, HttpServletRequest request){
+        return letterService.postLetter(letterRequestDto,request);
     }
 
     @GetMapping("/post/{id}")
