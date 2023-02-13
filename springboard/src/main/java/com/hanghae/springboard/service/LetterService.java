@@ -3,14 +3,20 @@ package com.hanghae.springboard.service;
 import com.hanghae.springboard.dto.LetterResponseDto;
 import com.hanghae.springboard.dto.LetterRequestDto;
 import com.hanghae.springboard.entity.Letter;
+import com.hanghae.springboard.entity.User;
+import com.hanghae.springboard.jwt.JwtUtil;
 import com.hanghae.springboard.repository.LetterRepository;
+import com.hanghae.springboard.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,11 +24,22 @@ import java.util.stream.Collectors;
 public class LetterService {
     private final LetterRepository letterRepository;
 
+    private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
+
     @Transactional
-    public long postLetter(LetterRequestDto letterRequestDto){
-        Letter letter = new Letter(letterRequestDto);
-        letterRepository.save(letter);
-        return new LetterResponseDto(letter).getId();
+    public LetterResponseDto postLetter(LetterRequestDto letterRequestDto, HttpServletRequest request){
+        String token = jwtUtil.resolveToken(request);
+        Claims claims;
+        if (token != null){
+            if (jwtUtil.validateToken(token)){
+                claims = jwtUtil.getUserInfoFromToken(token);
+            } else throw new IllegalArgumentException("Token Validate Error");
+
+            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+            Letter letter = letterRepository.saveAndFlush(new Letter(letterRequestDto, user.getUsername()));
+            return letterRepository.findById(letter.getId()).map(LetterResponseDto::new).orElseThrow(()->new IllegalArgumentException("게시글이 존재하지 않습니다."));
+        } else return null; // null 던져야 하나? 던지기 싫은데...
     }
 
     @Transactional(readOnly = true)
