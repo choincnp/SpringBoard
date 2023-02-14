@@ -21,9 +21,15 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum role;
+
     public User(SignupRequestDto signupRequestDto) { // 추후 builderPattern적용예정
         this.username = signupRequestDto.getUsername();
         this.password = signupRequestDto.getPassword();
+        if (signupRequestDto.isAdmin()) this.role = UserRoleEnum.ADMIN;
+        else this.role = UserRoleEnum.USER;
     }
 
 }

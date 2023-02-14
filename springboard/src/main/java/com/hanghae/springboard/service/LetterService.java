@@ -37,7 +37,7 @@ public class LetterService {
             } else throw new IllegalArgumentException("Token Validate Error");
 
             User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
-            Letter letter = letterRepository.saveAndFlush(new Letter(letterRequestDto, user.getUsername()));
+            Letter letter = letterRepository.saveAndFlush(new Letter(letterRequestDto, user));
             return letterRepository.findById(letter.getId()).map(LetterResponseDto::new).orElseThrow(()->new IllegalArgumentException("게시글이 존재하지 않습니다."));
         } else return null; // null 던져야 하나? 던지기 싫은데...
     }
@@ -54,14 +54,14 @@ public class LetterService {
     @Transactional
     public Long modifyLetter(Long id, LetterRequestDto letterRequestDto) {
         Letter letter = letterRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("아이디 없음"));
-        if (!letter.isValid(letterRequestDto)) throw new RuntimeException("비밀번호 불일치");
+//        if (!letter.isValid(letterRequestDto)) throw new RuntimeException("비밀번호 불일치");
         letter.update(letterRequestDto);
         return letter.getId();
     }
     @Transactional
     public String deleteLetter(Long id, String password) throws JSONException {
         Letter letter = letterRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("아이디 없음"));
-        if(!letter.isValid(password)) throw new RuntimeException("비밀번호 불일치");
+//        if(!letter.isValid(password)) throw new RuntimeException("비밀번호 불일치");
         letterRepository.delete(letter);
         JSONObject success = new JSONObject();
         success.put("success", true);

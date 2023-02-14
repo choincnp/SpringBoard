@@ -27,11 +27,11 @@ public class Letter extends Timestamped{
     @Column(nullable = false)
     private String password;
 
-    public Letter(LetterRequestDto letterRequestDto, String userName){
-        this.username = userName;
+    public Letter(LetterRequestDto letterRequestDto, User user){
+        this.username = user.getUsername();
+        this.password = user.getPassword();
         this.title = letterRequestDto.getTitle();
         this.contents = letterRequestDto.getContents();
-        this.password = letterRequestDto.getPassword();
     }
 
     public boolean isValid(LetterRequestDto letterRequestDto){
@@ -44,6 +44,7 @@ public class Letter extends Timestamped{
 
     public void update(LetterRequestDto letterRequestDto){
         this.username = letterRequestDto.getUsername();
+        this.password = letterRequestDto.getPassword();
         this.contents = letterRequestDto.getContents();
         this.title = letterRequestDto.getTitle();
     }
