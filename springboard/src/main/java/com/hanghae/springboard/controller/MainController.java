@@ -5,12 +5,14 @@ import com.hanghae.springboard.dto.LetterRequestDto;
 import com.hanghae.springboard.service.LetterService;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,13 +32,13 @@ public class MainController {
     }
 
     @GetMapping("/post/{id}")
-    public Long viewOne(@PathVariable Long id){
-        return letterService.findOne(id).getId();
+    public LetterResponseDto viewOne(@PathVariable Long id){
+        return letterService.findOne(id);
     }
 
     @PutMapping("/post/{id}") //PUT METHOD이기 때문에 모든 내용이 다 들어가야 한다.
-    public Long modifyLetter(@PathVariable Long id, @RequestBody LetterRequestDto letterRequestDto){
-        return letterService.modifyLetter(id,letterRequestDto);
+    public ResponseEntity<?> modifyLetter(@PathVariable Long id, @RequestBody LetterRequestDto letterRequestDto, HttpServletRequest request){
+        return letterService.modifyLetter(id,letterRequestDto,request);
     }
 //    @DeleteMapping("/post/{id}") //ModelAttribute 방식으로 구현, body : x-www.form-urlencoded
 //    public String deleteLetter(@PathVariable Long id, @ModelAttribute("password") String password) throws JSONException {
@@ -50,8 +52,8 @@ public class MainController {
 //    }
 
     @DeleteMapping("/post/{id}") //RequestBody 방식으로 구현, body : raw - text
-    public String deleteLetter(@PathVariable Long id, @RequestBody String password) throws JSONException {
-        return letterService.deleteLetter(id, password);
+    public ResponseEntity<?> deleteLetter(@PathVariable Long id, HttpServletRequest request) {
+        return letterService.deleteLetter(id, request);
     }
 
 }

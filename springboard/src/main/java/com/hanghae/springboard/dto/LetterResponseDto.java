@@ -9,13 +9,17 @@ import java.time.LocalDateTime;
 @Getter
 @RequiredArgsConstructor
 public class LetterResponseDto {
-    private LocalDateTime createAt;
-    private LocalDateTime modifiedAt;
     private Long id;
+
+    private String title;
     private String contents;
     private String username;
 
+    private LocalDateTime createAt;
+    private LocalDateTime modifiedAt;
+
     public LetterResponseDto(Letter letter){
+        this.title = letter.getTitle();
         this.createAt = letter.getCreatedAt();
         this.modifiedAt = letter.getModifiedAt();
         this.id = letter.getId();

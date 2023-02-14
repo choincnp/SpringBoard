@@ -2,6 +2,7 @@ package com.hanghae.springboard.service;
 
 import com.hanghae.springboard.dto.LetterResponseDto;
 import com.hanghae.springboard.dto.LetterRequestDto;
+import com.hanghae.springboard.dto.StatusResponseDto;
 import com.hanghae.springboard.entity.Letter;
 import com.hanghae.springboard.entity.User;
 import com.hanghae.springboard.jwt.JwtUtil;
@@ -11,6 +12,7 @@ import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,19 +54,32 @@ public class LetterService {
         return letterRepository.findById(id).map(LetterResponseDto::new).orElseThrow(() -> new IllegalArgumentException("아이디 없음"));
     }
     @Transactional
-    public Long modifyLetter(Long id, LetterRequestDto letterRequestDto) {
-        Letter letter = letterRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("아이디 없음"));
-//        if (!letter.isValid(letterRequestDto)) throw new RuntimeException("비밀번호 불일치");
-        letter.update(letterRequestDto);
-        return letter.getId();
+    public ResponseEntity<?> modifyLetter(Long id, LetterRequestDto letterRequestDto, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        Claims claims; // 작성자 확인 넣기
+        if (token != null ){
+            if (jwtUtil.validateToken(token)){
+                claims = jwtUtil.getUserInfoFromToken(token);
+            } else throw new IllegalArgumentException("Token Validate Error");
+            if(userRepository.findById(id).equals(userRepository.findByUsername(claims.getSubject()))){
+                Letter letter = letterRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+                letter.update(letterRequestDto);
+            }return ResponseEntity.ok(letterRepository.findById(id).map(LetterResponseDto::new));
+        } else return null;
     }
     @Transactional
-    public String deleteLetter(Long id, String password) throws JSONException {
-        Letter letter = letterRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("아이디 없음"));
-//        if(!letter.isValid(password)) throw new RuntimeException("비밀번호 불일치");
-        letterRepository.delete(letter);
-        JSONObject success = new JSONObject();
-        success.put("success", true);
-        return success.toString();
+    public ResponseEntity<?> deleteLetter(Long id, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        Claims claims; // 작성자 확인 넣기
+        if (token != null ){
+            if (jwtUtil.validateToken(token)){
+                claims = jwtUtil.getUserInfoFromToken(token);
+            } else throw new IllegalArgumentException("Token Validate Error");
+            if(userRepository.findById(id).equals(userRepository.findByUsername(claims.getSubject()))){
+                Letter letter = letterRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+                letterRepository.delete(letter);
+            }return ResponseEntity.ok("게시글 삭제 성공");
+        } else return null;
     }
+
 }
