@@ -33,7 +33,8 @@
 ![대지 1](https://user-images.githubusercontent.com/108874833/216953938-e6200052-fb62-41df-a654-ad90b1f0abec.png)
 
 ## Conceptual Data Modeling
-![bulletin-mk1](https://user-images.githubusercontent.com/108874833/218366793-4c6d2775-6e68-4719-8574-7f73c4b3f151.jpg)
+![논리](https://user-images.githubusercontent.com/108874833/219086355-29a9cd66-3356-42da-b39c-2b392016ff7c.jpg)
+
 
 ## API 명세서
 | 기능  | Method | url            | request header                                                                                                     | request body                                                                                                                                                                                                                                                                                                                                                                                 |
