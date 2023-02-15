@@ -27,7 +27,7 @@ public class Letter extends Timestamped{
     @Column(nullable = false)
     private String contents; // 내용
 
-    @OneToMany(mappedBy = "Letter")
+    @OneToMany(mappedBy = "Letter", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     public Letter(LetterRequestDto letterRequestDto, User user){
