@@ -31,4 +31,8 @@ public class Comment extends Timestamped{
         this.Letter = letter;
         this.User = user;
     }
+
+    public void update(CommentRequestDto commentRequestDto){
+        this.contents = commentRequestDto.getContents();
+    }
 }

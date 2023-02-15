@@ -25,4 +25,9 @@ public class CommentController {
         return commentService.modifyComment(id,commentRequestDto,request);
     }
 
+    @DeleteMapping("/comment/{id}")
+    public ResponseEntity<?> deleteComment(@PathVariable Long id, HttpServletRequest request){
+        return commentService.deleteComment(id, request);
+    }
+
 }

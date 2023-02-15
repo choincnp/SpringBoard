@@ -47,16 +47,29 @@ public class CommentService {
             return ResponseEntity.ok(commentRepository.findById(comment.getId()).map(CommentResponseDto::new));
         } else return null;
     }
-//    @Transactional
-//    public ResponseEntity<?> modifyComment(Long id, CommentRequestDto commentRequestDto, HttpServletRequest request) {
-//        String token = jwtUtil.resolveToken(request);
-//        Claims claims;
-//        if (token != null){
-//            claims = jwtUtil.getUserInfoFromToken(token);
-//        }else throw new IllegalArgumentException("Token Validate Error");
-//
-//        Comment comment = commentRepository.findById(id).orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND_DATA));
-//        User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(() -> new CustomException(ErrorCode.EMPTY_CLIENT));
-//        if ()
-//    }
+    @Transactional
+    public ResponseEntity<?> modifyComment(Long id, CommentRequestDto commentRequestDto, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        Claims claims;
+        if (!(token != null || jwtUtil.validateToken(token))) throw new IllegalArgumentException("Token Validate Error");
+        claims = jwtUtil.getUserInfoFromToken(token);
+        User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(() -> new CustomException(ErrorCode.EMPTY_CLIENT));
+        Comment comment = commentRepository.findById(id).orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND_DATA));
+        if (user.getId().equals(comment.getUser().getId())) comment.update(commentRequestDto);
+        else throw new CustomException(ErrorCode.EMPTY_CLIENT);
+        return ResponseEntity.ok(commentRepository.findById(comment.getId()).map(CommentResponseDto::new));
+    }
+
+    @Transactional
+    public ResponseEntity<?> deleteComment(Long id, HttpServletRequest request){
+        String token = jwtUtil.resolveToken(request);
+        Claims claims;
+        if (!(token != null || jwtUtil.validateToken(token))) throw new IllegalArgumentException("Token Validate Error");
+        claims = jwtUtil.getUserInfoFromToken(token);
+        User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(() -> new CustomException(ErrorCode.EMPTY_CLIENT));
+        Comment comment = commentRepository.findById(id).orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND_DATA));
+        if (user.getId().equals(comment.getUser().getId())) commentRepository.delete(comment);
+        else throw new CustomException(ErrorCode.EMPTY_CLIENT);
+        return ResponseEntity.ok("댓글 삭제 성공");
+    }
 }
