@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -15,8 +17,9 @@ public class Letter extends Timestamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 게시물 번호
 
-    @Column(nullable = false)
-    private String username; // 작성자명
+    @ManyToOne
+    @JoinColumn(name="USER_ID", nullable = false)
+    private User user; // 작성자명
 
     @Column(nullable = false)
     private String title;
@@ -24,22 +27,13 @@ public class Letter extends Timestamped{
     @Column(nullable = false)
     private String contents; // 내용
 
-    @Column(nullable = false)
-    private String password;
+    @OneToMany(mappedBy = "Letter")
+    private List<Comment> comments = new ArrayList<>();
 
     public Letter(LetterRequestDto letterRequestDto, User user){
-        this.username = user.getUsername();
-        this.password = user.getPassword();
+        this.user = user;
         this.title = letterRequestDto.getTitle();
         this.contents = letterRequestDto.getContents();
-    }
-
-    public boolean isValid(LetterRequestDto letterRequestDto){
-        return password.equals(letterRequestDto.getPassword());
-    }
-
-    public boolean isValid(String password){
-        return this.password.equals(password);
     }
 
     public void update(LetterRequestDto letterRequestDto){

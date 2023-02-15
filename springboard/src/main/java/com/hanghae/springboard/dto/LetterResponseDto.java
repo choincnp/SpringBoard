@@ -24,7 +24,7 @@ public class LetterResponseDto {
         this.modifiedAt = letter.getModifiedAt();
         this.id = letter.getId();
         this.contents = letter.getContents();
-        this.username = letter.getUsername();
+        this.username = letter.getUser().getUsername();
     }
 
 }

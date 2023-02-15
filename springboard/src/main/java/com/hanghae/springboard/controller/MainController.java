@@ -26,7 +26,7 @@ public class MainController {
         return letterService.findAll();
     }
 
-    @PostMapping("/post")
+    @PostMapping("/post") // 게시글 작성
     public LetterResponseDto postLetter(@RequestBody LetterRequestDto letterRequestDto, HttpServletRequest request){
         return letterService.postLetter(letterRequestDto,request);
     }

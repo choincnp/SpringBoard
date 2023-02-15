@@ -22,18 +22,16 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/signup")
+    @PostMapping("/signup") // 회원가입
     public ResponseEntity<?> signUp(@Valid @RequestBody SignupRequestDto signupRequestDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());}
         userService.signUp(signupRequestDto);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>("success",headers, HttpStatus.OK);
+        return ResponseEntity.ok("success");
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         userService.login(loginRequestDto, response);
-        return "success";
+        return ResponseEntity.ok("success");
     }
 }
