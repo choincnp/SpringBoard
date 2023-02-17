@@ -6,6 +6,7 @@ import com.hanghae.springboard.dto.LetterResponseDto;
 import com.hanghae.springboard.entity.Comment;
 import com.hanghae.springboard.entity.Letter;
 import com.hanghae.springboard.entity.User;
+import com.hanghae.springboard.entity.UserRoleEnum;
 import com.hanghae.springboard.exception.CustomException;
 import com.hanghae.springboard.exception.ErrorCode;
 import com.hanghae.springboard.jwt.JwtUtil;
@@ -44,6 +45,7 @@ public class CommentService {
         User user = jwtValidation(request);
         Comment comment = commentRepository.findById(id).orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND_DATA));
         if (user.getId().equals(comment.getUser().getId())) comment.update(commentRequestDto);
+        else if (user.getRole().equals(UserRoleEnum.ADMIN)) {comment.update(commentRequestDto);}
         else throw new CustomException(ErrorCode.EMPTY_CLIENT);
         return ResponseEntity.ok(commentRepository.findById(comment.getId()).map(CommentResponseDto::new));
     }
@@ -53,6 +55,7 @@ public class CommentService {
         User user = jwtValidation(request);
         Comment comment = commentRepository.findById(id).orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND_DATA));
         if (user.getId().equals(comment.getUser().getId())) commentRepository.delete(comment);
+        else if (user.getRole().equals(UserRoleEnum.ADMIN)){commentRepository.delete(comment);}
         else throw new CustomException(ErrorCode.EMPTY_CLIENT);
         return ResponseEntity.ok("댓글 삭제 성공");
     }
@@ -63,8 +66,7 @@ public class CommentService {
         if(token != null){
             if (jwtUtil.validateToken(token)){
                 claims = jwtUtil.getUserInfoFromToken(token);
-                User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(()->new CustomException(ErrorCode.EMPTY_CLIENT));
-                return user;
+                return userRepository.findByUsername(claims.getSubject()).orElseThrow(()->new CustomException(ErrorCode.EMPTY_CLIENT));
             }throw new CustomException(ErrorCode.INVALID_AUTH_TOKEN);
         }
         else throw new CustomException(ErrorCode.INVALID_AUTH_TOKEN);

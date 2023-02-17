@@ -5,6 +5,9 @@ import com.hanghae.springboard.dto.LetterRequestDto;
 import com.hanghae.springboard.dto.StatusResponseDto;
 import com.hanghae.springboard.entity.Letter;
 import com.hanghae.springboard.entity.User;
+import com.hanghae.springboard.entity.UserRoleEnum;
+import com.hanghae.springboard.exception.CustomException;
+import com.hanghae.springboard.exception.ErrorCode;
 import com.hanghae.springboard.jwt.JwtUtil;
 import com.hanghae.springboard.repository.LetterRepository;
 import com.hanghae.springboard.repository.UserRepository;
@@ -31,17 +34,9 @@ public class LetterService {
 
     @Transactional
     public LetterResponseDto postLetter(LetterRequestDto letterRequestDto, HttpServletRequest request){
-        String token = jwtUtil.resolveToken(request);
-        Claims claims;
-        if (token != null){
-            if (jwtUtil.validateToken(token)){
-                claims = jwtUtil.getUserInfoFromToken(token);
-            } else throw new IllegalArgumentException("Token Validate Error");
-
-            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
-            Letter letter = letterRepository.saveAndFlush(new Letter(letterRequestDto, user));
-            return letterRepository.findById(letter.getId()).map(LetterResponseDto::new).orElseThrow(()->new IllegalArgumentException("게시글이 존재하지 않습니다."));
-        } else return null; // null 던져야 하나? 던지기 싫은데...
+        User user = jwtValidation(request);
+        Letter letter = letterRepository.saveAndFlush(new Letter(letterRequestDto,user));
+        return letterRepository.findById(letter.getId()).map(LetterResponseDto::new).orElseThrow(()->new IllegalArgumentException("게시글이 존재하지 않습니다."));
     }
 
     @Transactional(readOnly = true)
@@ -55,31 +50,32 @@ public class LetterService {
     }
     @Transactional
     public ResponseEntity<?> modifyLetter(Long id, LetterRequestDto letterRequestDto, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        Claims claims; // 작성자 확인 넣기
-        if (token != null ){
-            if (jwtUtil.validateToken(token)){
-                claims = jwtUtil.getUserInfoFromToken(token);
-            } else throw new IllegalArgumentException("Token Validate Error");
-            if(userRepository.findById(id).equals(userRepository.findByUsername(claims.getSubject()))){
-                Letter letter = letterRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-                letter.update(letterRequestDto);
-            }return ResponseEntity.ok(letterRepository.findById(id).map(LetterResponseDto::new));
-        } else return null;
+        User user = jwtValidation(request);
+        Letter letter = letterRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        if (user.getUsername().equals(letter.getUser().getUsername()))letter.update(letterRequestDto);
+        else if (user.getRole().equals(UserRoleEnum.ADMIN)) letter.update(letterRequestDto);
+        else throw new CustomException(ErrorCode.EMPTY_CLIENT);
+        return ResponseEntity.ok(letterRepository.findById(id).map(LetterResponseDto::new));
     }
     @Transactional
     public ResponseEntity<?> deleteLetter(Long id, HttpServletRequest request) {
+        User user = jwtValidation(request);
+        Letter letter = letterRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        if (user.getUsername().equals(letter.getUser().getUsername())) letterRepository.delete(letter);
+        else if (user.getRole().equals(UserRoleEnum.ADMIN)) letterRepository.delete(letter);
+        return ResponseEntity.ok("게시글 삭제 성공");
+    }
+
+    public User jwtValidation(HttpServletRequest request){ // JWT 인증정보 추가
         String token = jwtUtil.resolveToken(request);
-        Claims claims; // 작성자 확인 넣기
-        if (token != null ){
+        Claims claims;
+        if(token != null){
             if (jwtUtil.validateToken(token)){
                 claims = jwtUtil.getUserInfoFromToken(token);
-            } else throw new IllegalArgumentException("Token Validate Error");
-            if(userRepository.findById(id).equals(userRepository.findByUsername(claims.getSubject()))){
-                Letter letter = letterRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-                letterRepository.delete(letter);
-            }return ResponseEntity.ok("게시글 삭제 성공");
-        } else return null;
+                return userRepository.findByUsername(claims.getSubject()).orElseThrow(()->new CustomException(ErrorCode.EMPTY_CLIENT));
+            }throw new CustomException(ErrorCode.INVALID_AUTH_TOKEN);
+        }
+        else throw new CustomException(ErrorCode.INVALID_AUTH_TOKEN);
     }
 
 }

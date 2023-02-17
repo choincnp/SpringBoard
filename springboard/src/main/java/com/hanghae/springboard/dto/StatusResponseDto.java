@@ -1,8 +1,10 @@
 package com.hanghae.springboard.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 @Getter
+@Builder
 public class StatusResponseDto {
     private boolean success;
     private HttpStatus httpStatus;
