@@ -1,12 +1,11 @@
-package com.hanghae.springboard.entity;
+package com.hanghae.springboard.domain.user.entity;
 
-import com.hanghae.springboard.dto.SignupRequestDto;
+import com.hanghae.springboard.domain.user.dto.SignupRequestDto;
+import com.hanghae.springboard.entity.UserRoleEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor

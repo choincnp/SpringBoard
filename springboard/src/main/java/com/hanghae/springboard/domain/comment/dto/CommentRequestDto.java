@@ -1,4 +1,4 @@
-package com.hanghae.springboard.dto;
+package com.hanghae.springboard.domain.comment.dto;
 
 import lombok.Getter;
 

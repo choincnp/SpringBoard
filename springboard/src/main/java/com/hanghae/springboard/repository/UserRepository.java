@@ -1,6 +1,6 @@
 package com.hanghae.springboard.repository;
 
-import com.hanghae.springboard.entity.User;
+import com.hanghae.springboard.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

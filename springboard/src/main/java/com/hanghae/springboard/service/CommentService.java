@@ -1,11 +1,10 @@
 package com.hanghae.springboard.service;
 
-import com.hanghae.springboard.dto.CommentRequestDto;
-import com.hanghae.springboard.dto.CommentResponseDto;
-import com.hanghae.springboard.dto.LetterResponseDto;
-import com.hanghae.springboard.entity.Comment;
-import com.hanghae.springboard.entity.Letter;
-import com.hanghae.springboard.entity.User;
+import com.hanghae.springboard.domain.comment.dto.CommentRequestDto;
+import com.hanghae.springboard.domain.comment.dto.CommentResponseDto;
+import com.hanghae.springboard.domain.comment.entity.Comment;
+import com.hanghae.springboard.domain.letter.entity.Letter;
+import com.hanghae.springboard.domain.user.entity.User;
 import com.hanghae.springboard.entity.UserRoleEnum;
 import com.hanghae.springboard.exception.CustomException;
 import com.hanghae.springboard.exception.ErrorCode;

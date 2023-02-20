@@ -1,18 +1,14 @@
 package com.hanghae.springboard.controller;
 
-import com.hanghae.springboard.dto.LetterResponseDto;
-import com.hanghae.springboard.dto.LetterRequestDto;
+import com.hanghae.springboard.domain.letter.dto.LetterResponseDto;
+import com.hanghae.springboard.domain.letter.dto.LetterRequestDto;
 import com.hanghae.springboard.service.LetterService;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor

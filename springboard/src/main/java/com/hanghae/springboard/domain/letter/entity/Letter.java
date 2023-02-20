@@ -1,6 +1,9 @@
-package com.hanghae.springboard.entity;
+package com.hanghae.springboard.domain.letter.entity;
 
-import com.hanghae.springboard.dto.LetterRequestDto;
+import com.hanghae.springboard.domain.comment.entity.Comment;
+import com.hanghae.springboard.domain.letter.dto.LetterRequestDto;
+import com.hanghae.springboard.domain.user.entity.User;
+import com.hanghae.springboard.entity.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +14,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Letter extends Timestamped{
+public class Letter extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

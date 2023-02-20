@@ -1,8 +1,8 @@
 package com.hanghae.springboard.service;
 
-import com.hanghae.springboard.dto.LoginRequestDto;
-import com.hanghae.springboard.dto.SignupRequestDto;
-import com.hanghae.springboard.entity.User;
+import com.hanghae.springboard.domain.user.dto.LoginRequestDto;
+import com.hanghae.springboard.domain.user.dto.SignupRequestDto;
+import com.hanghae.springboard.domain.user.entity.User;
 import com.hanghae.springboard.entity.UserRoleEnum;
 import com.hanghae.springboard.jwt.JwtUtil;
 import com.hanghae.springboard.repository.UserRepository;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.util.Optional;
 
 @Service

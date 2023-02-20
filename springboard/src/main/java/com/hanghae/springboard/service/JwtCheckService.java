@@ -1,6 +1,6 @@
 package com.hanghae.springboard.service;
 
-import com.hanghae.springboard.entity.User;
+import com.hanghae.springboard.domain.user.entity.User;
 import com.hanghae.springboard.exception.CustomException;
 import com.hanghae.springboard.exception.ErrorCode;
 import com.hanghae.springboard.jwt.JwtUtil;
@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.html.parser.Entity;
 
 @Service
 @RequiredArgsConstructor

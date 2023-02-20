@@ -1,6 +1,6 @@
-package com.hanghae.springboard.dto;
+package com.hanghae.springboard.domain.comment.dto;
 
-import com.hanghae.springboard.entity.Comment;
+import com.hanghae.springboard.domain.comment.entity.Comment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -1,7 +1,6 @@
 package com.hanghae.springboard.repository;
 
-import com.hanghae.springboard.dto.LetterResponseDto;
-import com.hanghae.springboard.entity.Letter;
+import com.hanghae.springboard.domain.letter.entity.Letter;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

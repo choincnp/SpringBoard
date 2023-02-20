@@ -1,10 +1,9 @@
 package com.hanghae.springboard.service;
 
-import com.hanghae.springboard.dto.LetterResponseDto;
-import com.hanghae.springboard.dto.LetterRequestDto;
-import com.hanghae.springboard.dto.StatusResponseDto;
-import com.hanghae.springboard.entity.Letter;
-import com.hanghae.springboard.entity.User;
+import com.hanghae.springboard.domain.letter.dto.LetterResponseDto;
+import com.hanghae.springboard.domain.letter.dto.LetterRequestDto;
+import com.hanghae.springboard.domain.letter.entity.Letter;
+import com.hanghae.springboard.domain.user.entity.User;
 import com.hanghae.springboard.entity.UserRoleEnum;
 import com.hanghae.springboard.exception.CustomException;
 import com.hanghae.springboard.exception.ErrorCode;
@@ -13,15 +12,12 @@ import com.hanghae.springboard.repository.LetterRepository;
 import com.hanghae.springboard.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

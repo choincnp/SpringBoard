@@ -1,13 +1,10 @@
 package com.hanghae.springboard.controller;
 
-import com.hanghae.springboard.dto.LoginRequestDto;
-import com.hanghae.springboard.dto.SignupRequestDto;
+import com.hanghae.springboard.domain.user.dto.LoginRequestDto;
+import com.hanghae.springboard.domain.user.dto.SignupRequestDto;
 import com.hanghae.springboard.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;

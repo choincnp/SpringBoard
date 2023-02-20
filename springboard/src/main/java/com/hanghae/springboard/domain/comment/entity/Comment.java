@@ -1,16 +1,18 @@
-package com.hanghae.springboard.entity;
+package com.hanghae.springboard.domain.comment.entity;
 
-import com.hanghae.springboard.dto.CommentRequestDto;
+import com.hanghae.springboard.domain.comment.dto.CommentRequestDto;
+import com.hanghae.springboard.domain.letter.entity.Letter;
+import com.hanghae.springboard.entity.Timestamped;
+import com.hanghae.springboard.domain.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Comment extends Timestamped{
+public class Comment extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,11 +20,11 @@ public class Comment extends Timestamped{
 
     @ManyToOne
     @JoinColumn(name = "LETTER_ID",nullable = false)
-    private Letter Letter;
+    private com.hanghae.springboard.domain.letter.entity.Letter Letter;
 
     @ManyToOne
     @JoinColumn(name="USER_ID", nullable = false)
-    private User User;
+    private com.hanghae.springboard.domain.user.entity.User User;
 
     private String contents;
 

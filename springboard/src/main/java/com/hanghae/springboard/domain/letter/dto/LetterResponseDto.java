@@ -1,8 +1,7 @@
-package com.hanghae.springboard.dto;
+package com.hanghae.springboard.domain.letter.dto;
 
-import com.hanghae.springboard.entity.Letter;
+import com.hanghae.springboard.domain.letter.entity.Letter;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
 

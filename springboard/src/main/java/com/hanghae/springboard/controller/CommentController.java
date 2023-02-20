@@ -1,6 +1,6 @@
 package com.hanghae.springboard.controller;
 
-import com.hanghae.springboard.dto.CommentRequestDto;
+import com.hanghae.springboard.domain.comment.dto.CommentRequestDto;
 import com.hanghae.springboard.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
