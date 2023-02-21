@@ -17,7 +17,7 @@ public class MainController {
 
     private final LetterService letterService;
 
-    @GetMapping("/posts")
+    @GetMapping("/post")
     public List<LetterResponseDto> viewAll(){
         return letterService.findAll();
     }
@@ -28,7 +28,7 @@ public class MainController {
     }
 
     @GetMapping("/post/{id}")
-    public LetterResponseDto viewOne(@PathVariable Long id){
+    public ResponseEntity<?> viewOne(@PathVariable Long id){
         return letterService.findOne(id);
     }
 

@@ -4,6 +4,8 @@ import com.hanghae.springboard.domain.comment.entity.Comment;
 import com.hanghae.springboard.domain.letter.dto.LetterRequestDto;
 import com.hanghae.springboard.domain.user.entity.User;
 import com.hanghae.springboard.entity.Timestamped;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,13 +16,15 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Letter extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 게시물 번호
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="USER_ID", nullable = false)
     private User user; // 작성자명
 
@@ -30,7 +34,7 @@ public class Letter extends Timestamped {
     @Column(nullable = false)
     private String contents; // 내용
 
-    @OneToMany(mappedBy = "Letter", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "Letter", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
     public Letter(LetterRequestDto letterRequestDto, User user){
@@ -43,4 +47,5 @@ public class Letter extends Timestamped {
         this.contents = letterRequestDto.getContents();
         this.title = letterRequestDto.getTitle();
     }
+
 }

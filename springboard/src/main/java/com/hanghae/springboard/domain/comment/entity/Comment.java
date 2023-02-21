@@ -18,11 +18,11 @@ public class Comment extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LETTER_ID",nullable = false)
     private com.hanghae.springboard.domain.letter.entity.Letter Letter;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="USER_ID", nullable = false)
     private com.hanghae.springboard.domain.user.entity.User User;
 

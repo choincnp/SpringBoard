@@ -1,17 +1,16 @@
 package com.hanghae.springboard.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.http.HttpStatus;
 @Getter
-@Builder
 @AllArgsConstructor
-public class StatusResponseDto {
-    private boolean success;
+@NoArgsConstructor
+@Builder
+public class StatusResponseDto<T> {
     private HttpStatus httpStatus;
-    private String message;
 
+    private T data;
+    private String message;
     public StatusResponseDto(boolean success, String message) {
         if (success){
             this.httpStatus = HttpStatus.OK;

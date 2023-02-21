@@ -7,6 +7,7 @@ import com.hanghae.springboard.entity.UserRoleEnum;
 import com.hanghae.springboard.jwt.JwtUtil;
 import com.hanghae.springboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,18 +22,20 @@ public class UserService {
 
     private final JwtUtil jwtUtil;
 
+    private final PasswordEncoder passwordEncoder;
+
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional
     public void signUp(SignupRequestDto signupRequestDto){
         String username = signupRequestDto.getUsername();
-        String password = signupRequestDto.getPassword();
+        String password = passwordEncoder.encode(signupRequestDto.getPassword());
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
 
-        UserRoleEnum role = UserRoleEnum.USER;
+        UserRoleEnum role = UserRoleEnum.USER; // 여기서 role 확인까지
         if (signupRequestDto.isAdmin()) {
             if (!signupRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
                 throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
@@ -40,7 +43,7 @@ public class UserService {
             role = UserRoleEnum.ADMIN;
         }
 
-        User user = new User(signupRequestDto);
+        User user = new User(username, password, role);
         userRepository.save(user);
     }
 
@@ -53,7 +56,7 @@ public class UserService {
                 () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
 
-        if(!user.getPassword().equals(password)){
+        if(!passwordEncoder.matches(password, user.getPassword())){ // 입력받은 평문을 암호화 돌려서 DB의 password와 일치하는지 확인
             throw  new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 

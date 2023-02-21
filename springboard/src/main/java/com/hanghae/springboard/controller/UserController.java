@@ -6,11 +6,15 @@ import com.hanghae.springboard.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,14 +25,24 @@ public class UserController {
 
     @PostMapping("/signup") // 회원가입
     public ResponseEntity<?> signUp(@Valid @RequestBody SignupRequestDto signupRequestDto, BindingResult bindingResult){
-        if (bindingResult.hasErrors()) {return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());}
+        if (bindingResult.hasErrors()) return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         userService.signUp(signupRequestDto);
-        return ResponseEntity.ok("success");
+        return ResponseEntity.status(HttpStatus.OK).body("success");
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         userService.login(loginRequestDto, response);
         return ResponseEntity.ok("success");
+    }
+
+    @GetMapping("/forbidden")
+    public ModelAndView getForbidden() {
+        return new ModelAndView("forbidden");
+    }
+
+    @PostMapping("/forbidden")
+    public ModelAndView postForbidden() {
+        return new ModelAndView("forbidden");
     }
 }

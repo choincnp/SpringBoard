@@ -1,13 +1,17 @@
 package com.hanghae.springboard.service;
 
+import com.hanghae.springboard.domain.comment.dto.CommentResponseDto;
+import com.hanghae.springboard.domain.comment.entity.Comment;
 import com.hanghae.springboard.domain.letter.dto.LetterResponseDto;
 import com.hanghae.springboard.domain.letter.dto.LetterRequestDto;
 import com.hanghae.springboard.domain.letter.entity.Letter;
 import com.hanghae.springboard.domain.user.entity.User;
+import com.hanghae.springboard.dto.StatusResponseDto;
 import com.hanghae.springboard.entity.UserRoleEnum;
 import com.hanghae.springboard.exception.CustomException;
 import com.hanghae.springboard.exception.ErrorCode;
 import com.hanghae.springboard.jwt.JwtUtil;
+import com.hanghae.springboard.repository.CommentRepository;
 import com.hanghae.springboard.repository.LetterRepository;
 import com.hanghae.springboard.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -18,21 +22,25 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
 public class LetterService {
     private final LetterRepository letterRepository;
-
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
     @Transactional
     public LetterResponseDto postLetter(LetterRequestDto letterRequestDto, HttpServletRequest request){
         User user = jwtValidation(request);
+
         Letter letter = letterRepository.saveAndFlush(new Letter(letterRequestDto,user));
-        return letterRepository.findById(letter.getId()).map(LetterResponseDto::new).orElseThrow(()->new IllegalArgumentException("게시글이 존재하지 않습니다."));
+
+        return letterRepository.findById(letter.getId()).map(LetterResponseDto::new).orElseThrow(
+                ()->new IllegalArgumentException("게시글이 존재하지 않습니다."));
     }
 
     @Transactional(readOnly = true)
@@ -41,8 +49,23 @@ public class LetterService {
     }
 
     @Transactional(readOnly = true)
-    public LetterResponseDto findOne(Long id){
-        return letterRepository.findById(id).map(LetterResponseDto::new).orElseThrow(() -> new IllegalArgumentException("아이디 없음"));
+    public ResponseEntity<?> findOne(Long id){
+
+        Letter letter = letterRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("게시글 없음")
+        );
+
+        List<CommentResponseDto> collect = letter.getComments().stream().map(CommentResponseDto::new).collect(Collectors.toList());
+
+        return ResponseEntity.ok(LetterResponseDto.builder()
+                    .createdAt(letter.getCreatedAt())
+                    .modifiedAt(letter.getModifiedAt())
+                    .title(letter.getTitle())
+                    .username(letter.getUser().getUsername())
+                    .contents(letter.getContents())
+                    .comments(collect)
+                    .build()
+        );
     }
     @Transactional
     public ResponseEntity<?> modifyLetter(Long id, LetterRequestDto letterRequestDto, HttpServletRequest request) {
@@ -73,5 +96,4 @@ public class LetterService {
         }
         else throw new CustomException(ErrorCode.INVALID_AUTH_TOKEN);
     }
-
 }
