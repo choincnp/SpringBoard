@@ -60,6 +60,7 @@ public class LetterService {
                     .username(letter.getUser().getUsername())
                     .contents(letter.getContents())
                     .comments(collect)
+                    .likeCount((long) letter.getLikes().size())
                     .build()
         );
     }

@@ -26,6 +26,8 @@ public class LetterResponseDto {
 
     private List<CommentResponseDto> comments = new ArrayList<>();
 
+    private Long likeCount;
+
     public LetterResponseDto(Letter letter){
         this.title = letter.getTitle();
         this.createdAt = letter.getCreatedAt();
@@ -34,6 +36,7 @@ public class LetterResponseDto {
         this.contents = letter.getContents();
         this.username = letter.getUser().getUsername();
         this.comments = letter.getComments().stream().map(CommentResponseDto::new).collect(Collectors.toList());
+        this.likeCount = (long)letter.getLikes().size();
     }
 
 }
