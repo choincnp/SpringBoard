@@ -2,6 +2,7 @@ package com.hanghae.springboard.domain.letter.entity;
 
 import com.hanghae.springboard.domain.comment.entity.Comment;
 import com.hanghae.springboard.domain.letter.dto.LetterRequestDto;
+import com.hanghae.springboard.domain.like.entity.LetterLike;
 import com.hanghae.springboard.domain.user.entity.User;
 import com.hanghae.springboard.entity.Timestamped;
 import lombok.AllArgsConstructor;
@@ -34,8 +35,11 @@ public class Letter extends Timestamped {
     @Column(nullable = false)
     private String contents; // 내용
 
-    @OneToMany(mappedBy = "Letter", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "letter", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "letter", cascade = CascadeType.ALL)
+    private List<LetterLike> likes = new ArrayList<>();
 
     public Letter(LetterRequestDto letterRequestDto, User user){
         this.user = user;

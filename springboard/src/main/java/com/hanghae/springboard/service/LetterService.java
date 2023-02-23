@@ -4,10 +4,13 @@ import com.hanghae.springboard.domain.comment.dto.CommentResponseDto;
 import com.hanghae.springboard.domain.letter.dto.LetterResponseDto;
 import com.hanghae.springboard.domain.letter.dto.LetterRequestDto;
 import com.hanghae.springboard.domain.letter.entity.Letter;
+import com.hanghae.springboard.domain.like.entity.LetterLike;
 import com.hanghae.springboard.domain.user.entity.User;
+import com.hanghae.springboard.dto.StatusResponseDto;
 import com.hanghae.springboard.entity.UserRoleEnum;
 import com.hanghae.springboard.exception.CustomException;
 import com.hanghae.springboard.exception.ErrorCode;
+import com.hanghae.springboard.repository.LetterLikeRepository;
 import com.hanghae.springboard.repository.LetterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +18,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class LetterService {
     private final LetterRepository letterRepository;
+
+    private final LetterLikeRepository letterLikeRepository;
 
     @Transactional
     public ResponseEntity<?> postLetter(LetterRequestDto letterRequestDto, User user){
@@ -74,5 +80,16 @@ public class LetterService {
 
         return ResponseEntity.ok("게시글 삭제 성공");
     }
-
+    @Transactional
+    public ResponseEntity<?> likeLetter(Long id, User user) {
+        Letter letter = letterRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        Optional<LetterLike> found = letterLikeRepository.findByLetterIdAndUserName(id, user.getUsername());
+        if (found.isPresent()){
+            letterLikeRepository.delete(found.get());
+        } else{
+            LetterLike like = new LetterLike(user.getUsername(), letter);
+            letterLikeRepository.save(like);
+        }
+        return ResponseEntity.ok(new StatusResponseDto<>(true, "success"));
+    }
 }

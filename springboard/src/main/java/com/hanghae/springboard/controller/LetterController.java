@@ -44,4 +44,9 @@ public class LetterController {
         return letterService.deleteLetter(id, userDetails.getUser());
     }
 
+    @PostMapping("/post/{id}/like")
+    public ResponseEntity<?> likeLetter(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return letterService.likeLetter(id, userDetails.getUser());
+    }
+
 }
