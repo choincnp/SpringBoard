@@ -25,7 +25,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final JwtUtil jwtUtil;
-    private final GlobalExecptionHandler globalExecptionHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
