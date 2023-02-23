@@ -30,7 +30,7 @@
           발급한 토큰을 Header에 추가하고 성공했다는 메시지, 상태코드 와 함께 Client에 반환하기
 
 ## 유스케이스 다이어그램
-![대지 1](https://user-images.githubusercontent.com/108874833/216953938-e6200052-fb62-41df-a654-ad90b1f0abec.png)
+![제목 없는 다이어그램 drawio](https://user-images.githubusercontent.com/108874833/220567930-4019ba1e-eb16-43c7-9704-2a4041221b70.png)
 
 ## Conceptual Data Modeling
 ![논리](https://user-images.githubusercontent.com/108874833/219086355-29a9cd66-3356-42da-b39c-2b392016ff7c.jpg)
