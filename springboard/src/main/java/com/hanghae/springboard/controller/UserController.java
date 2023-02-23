@@ -25,7 +25,7 @@ public class UserController {
 
     @PostMapping("/signup") // 회원가입
     public ResponseEntity<?> signUp(@Valid @RequestBody SignupRequestDto signupRequestDto, BindingResult bindingResult){
-        if (bindingResult.hasErrors()) return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        if (bindingResult.hasErrors()) return ResponseEntity.status(400).body(bindingResult.getAllErrors());
         userService.signUp(signupRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body("success");
     }

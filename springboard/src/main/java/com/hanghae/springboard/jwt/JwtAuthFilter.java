@@ -30,7 +30,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if(token != null) { // 토큰이 없는 경우 수행될 로직
             if(!jwtUtil.validateToken(token)){
-                jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
+                jwtExceptionHandler(response, "토큰이 유효하지 않습니다.", HttpStatus.BAD_REQUEST.value());
                 return;
             }
             Claims info = jwtUtil.getUserInfoFromToken(token);

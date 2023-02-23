@@ -4,6 +4,9 @@ import com.hanghae.springboard.domain.user.dto.LoginRequestDto;
 import com.hanghae.springboard.domain.user.dto.SignupRequestDto;
 import com.hanghae.springboard.domain.user.entity.User;
 import com.hanghae.springboard.entity.UserRoleEnum;
+import com.hanghae.springboard.exception.CustomException;
+import com.hanghae.springboard.exception.ErrorCode;
+import com.hanghae.springboard.exception.GlobalExecptionHandler;
 import com.hanghae.springboard.jwt.JwtUtil;
 import com.hanghae.springboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +35,7 @@ public class UserService {
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
-            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
+            throw new CustomException(ErrorCode.DUPLICATE_USERS);
         }
 
         UserRoleEnum role = UserRoleEnum.USER; // 여기서 role 확인까지
