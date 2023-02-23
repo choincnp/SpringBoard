@@ -35,6 +35,8 @@
 ## Conceptual Data Modeling
 ![논리](https://user-images.githubusercontent.com/108874833/219086355-29a9cd66-3356-42da-b39c-2b392016ff7c.jpg)
 
+## ERD
+![erd](https://user-images.githubusercontent.com/108874833/220891156-4a4f672f-aceb-418a-94c3-c139801b5828.png)
 
 ## API 명세서
 | 기능  | Method | url            | request header                                                                                                     | request body                                                                                                                                                                                                                                                                                                                                                                                 |
@@ -47,8 +49,6 @@
 | 수정  | GET | /api/post/{id} | {</br>"title" : "title2",</br>"content" : "content2",</br>"author" : "author2",</br>"password" : "password2"</br>} | {</br>"createdAt": "2022-07-25T12:43:01.226062”,</br>"modifiedAt": "2022-07-25T12:43:01.226062”,</br>"id": 1,</br>"title": "title2",</br>"content": "content2",</br>"author": "author2"</br>}                                                                                                                                                                                                |
 | 삭제  | GET | /api/post/{id} | {"password" :"password"}                                                                                           | {"success": true}                                                                                                                                                                                                                                                                                                                                                                            |
 [API 명세서](https://www.notion.so/edc75b030d4b411b8134c0f58e1898ba)
-
-## ERD
 
 
 ## Why
