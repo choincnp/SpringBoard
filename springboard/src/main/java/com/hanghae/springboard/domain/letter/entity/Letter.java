@@ -52,4 +52,8 @@ public class Letter extends Timestamped {
         this.title = letterRequestDto.getTitle();
     }
 
+    public void test(){
+        System.out.println("this is for test");
+    }
+
 }
